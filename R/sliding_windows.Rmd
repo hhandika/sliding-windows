@@ -9,6 +9,8 @@ output: html_document
 library(pacman)
 
 pacman::p_load(readr)
+pacman::p_load(dplyr)
+pacman::p_load(here)
 
 ```
 
