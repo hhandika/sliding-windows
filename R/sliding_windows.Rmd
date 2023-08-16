@@ -1,0 +1,29 @@
+---
+title: "Sliding windows"
+author: "Heru Handika & Jacob A. Esselstyn"
+date: "2023-08-16"
+output: html_document
+---
+
+```{r}
+library(pacman)
+
+pacman::p_load(readr)
+
+```
+
+```{r}
+data.path <- here::here("data", "sliding_windows.txt")
+
+df <- readr::read_delim(data.path, delim = "\t")
+
+group <- df |>
+  dplyr::mutate(sliding_windows = cut(end, seq(0, max(end), 2000000))) |>
+  dplyr::group_by(chrom, sliding_windows) |>
+  dplyr::summarise(mean_recombRate = mean(recombRate))
+  
+  
+readr::write_csv(group, here::here("results", "sliding_windows_results.csv"))
+```
+
+
