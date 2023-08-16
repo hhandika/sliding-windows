@@ -28,12 +28,10 @@ jobs:
           tar czvf sliding-windows.tar.gz -C target/release sliding-windows
 
       - name: Upload release
-        permissions:
-          contents: write
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: sliding-windows.tar.gz
+          file: rust/sliding-windows.tar.gz
           asset_name: sliding-windows-Linux-x86_64.tar.gz
           tag: ${{ github.ref }}
 
@@ -62,8 +60,6 @@ jobs:
           tar czvf sliding-windows.tar.gz -C target/x86_64-unknown-linux-musl/release sliding-windows
 
       - name: Upload release
-        permissions:
-          contents: write
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -93,8 +89,6 @@ jobs:
           tar czvf sliding-windows.tar.gz -C target/release sliding-windows
 
       - name: Upload release
-        permissions:
-          contents: write
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -104,7 +98,6 @@ jobs:
 
   macos_arm:
     name: macOS arm64
-    
     runs-on: macos-latest
     steps:
       - name: Checkout sources
@@ -128,8 +121,6 @@ jobs:
           tar czvf sliding-windows.tar.gz -C target/aarch64-apple-darwin/release sliding-windows
 
       - name: Upload release
-        permissions:
-          contents: write
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -161,8 +152,6 @@ jobs:
           powershell Compress-Archive target/release/sliding-windows.exe sliding-windows.zip
 
       - name: Upload release
-        permissions:
-          contents: write
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
