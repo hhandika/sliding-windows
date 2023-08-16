@@ -23,14 +23,14 @@ jobs:
           cargo build --release
 
       - name: Compress release
-        run: tar czvf segul.tar.gz -C rust/target/release segul
+        run: tar czvf sliding-windows.tar.gz -C rust/target/release sliding-windows
 
       - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: segul.tar.gz
-          asset_name: segul-Linux-x86_64.tar.gz
+          file: sliding-windows.tar.gz
+          asset_name: sliding-windows-Linux-x86_64.tar.gz
           tag: ${{ github.ref }}
 
   linux_musl:
@@ -53,14 +53,14 @@ jobs:
           cargo build --release --target x86_64-unknown-linux-musl
 
       - name: Compress release
-        run: tar czvf segul.tar.gz -C rust/target/x86_64-unknown-linux-musl/release segul
+        run: tar czvf sliding-windows.tar.gz -C rust/target/x86_64-unknown-linux-musl/release sliding-windows
 
       - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: segul.tar.gz
-          asset_name: segul-Linux-musl-x86_64.tar.gz
+          file: sliding-windows.tar.gz
+          asset_name: sliding-windows-Linux-musl-x86_64.tar.gz
           tag: ${{ github.ref }}
 
   macos:
@@ -80,14 +80,14 @@ jobs:
           cargo build --release
 
       - name: Compress release
-        run: tar czvf segul.tar.gz -C rust/target/release segul
+        run: tar czvf sliding-windows.tar.gz -C rust/target/release sliding-windows
 
       - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: segul.tar.gz
-          asset_name: segul-macOS-x86_64.tar.gz
+          file: sliding-windows.tar.gz
+          asset_name: sliding-windows-macOS-x86_64.tar.gz
           tag: ${{ github.ref }}
 
   macos_arm:
@@ -110,14 +110,14 @@ jobs:
           cargo build --release --target aarch64-apple-darwin
 
       - name: Compress release
-        run: tar czvf segul.tar.gz -C rust/target/aarch64-apple-darwin/release segul
+        run: tar czvf sliding-windows.tar.gz -C rust/target/aarch64-apple-darwin/release sliding-windows
 
       - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: segul.tar.gz
-          asset_name: segul-macOS-arm64.tar.gz
+          file: sliding-windows.tar.gz
+          asset_name: sliding-windows-macOS-arm64.tar.gz
           tag: ${{ github.ref }}
 
   windows:
@@ -139,12 +139,12 @@ jobs:
           cargo build --release
 
       - name: Compress release
-        run: powershell Compress-Archive rust/target/release/segul.exe segul.zip
+        run: powershell Compress-Archive rust/target/release/sliding-windows.exe sliding-windows.zip
 
       - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: segul.zip
-          asset_name: segul-Windows-x86_64.zip
+          file: sliding-windows.zip
+          asset_name: sliding-windows-Windows-x86_64.zip
           tag: ${{ github.ref }}
