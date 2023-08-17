@@ -21,7 +21,7 @@ jobs:
 
       - name: Run cargo check
         uses: dtolnay/rust-toolchain@stable
-      - run: |
+        run: |
           cd rust/
           cargo check
 
