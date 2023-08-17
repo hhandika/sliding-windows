@@ -42,7 +42,7 @@ jobs:
           toolchain: stable
 
       - name: Run cargo test
-        uses: actions-rs/cargo@v1
+        uses: dtolnay/rust-toolchain@stable
       - run: |
           cd rust/
           cargo test
