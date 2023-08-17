@@ -33,6 +33,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: rust/sliding-windows.tar.gz
           asset_name: sliding-windows-Linux-x86_64.tar.gz
+          overwrite: true
           tag: ${{ github.ref }}
 
   linux_musl:
@@ -65,6 +66,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: rust/sliding-windows.tar.gz
           asset_name: sliding-windows-Linux-musl-x86_64.tar.gz
+          overwrite: true
           tag: ${{ github.ref }}
 
   macos:
@@ -94,6 +96,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: rust/sliding-windows.tar.gz
           asset_name: sliding-windows-macOS-x86_64.tar.gz
+          overwrite: true
           tag: ${{ github.ref }}
 
   macos_arm:
@@ -126,6 +129,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: rust/sliding-windows.tar.gz
           asset_name: sliding-windows-macOS-arm64.tar.gz
+          overwrite: true
           tag: ${{ github.ref }}
 
   windows:
@@ -157,4 +161,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: rust/sliding-windows.zip
           asset_name: sliding-windows-Windows-x86_64.zip
+          overwrite: true
           tag: ${{ github.ref }}
