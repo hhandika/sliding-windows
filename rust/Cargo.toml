@@ -2,6 +2,13 @@
 name = "sliding-windows"
 version = "0.1.8"
 edition = "2021"
+license = "MIT"
+description = "A cli app to compute non-overlapping sliding windows"
+readme = "../README.md"
+homepage = "https://github.com/hhandika/sliding-windows"
+repository = "https://github.com/hhandika/sliding-windows"
+keywords = ["cli", "utility", "alignment", "genomics", "phylogenomics"]
+categories = ["command-line-utilities", "science"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
