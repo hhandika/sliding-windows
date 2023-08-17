@@ -71,7 +71,7 @@ fn compute_average(
         if total_recomb != 0.0 {
             let mean_recomb = total_recomb / interval_window as f64;
             average
-                .entry(chrom.clone())
+                .entry(key.to_string())
                 .or_insert_with(Vec::new)
                 .push(AverageSlidingWindows {
                     start: lowest_start,
