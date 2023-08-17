@@ -36,31 +36,49 @@ fn compute_average(
         let mut highest_end: usize = value[0].end;
         let mut total_recomb: f64 = 0.0;
         let mut interval_window = 0;
+        let mut chrom = String::new();
 
         value.iter().for_each(|v| {
-            if interval_window >= window_size {
-                let mean_recomb = total_recomb / (highest_end - lowest_start) as f64;
+            // We insert when it reaches the window size or when the chromosome changes
+            if interval_window >= window_size || &chrom != key && !chrom.is_empty() {
+                let mean_recomb = total_recomb / interval_window as f64;
                 average
-                    .entry(key.to_string())
+                    .entry(chrom.clone())
                     .or_insert_with(Vec::new)
                     .push(AverageSlidingWindows {
                         start: lowest_start,
                         end: highest_end,
-                        mean_recomb: mean_recomb / window_size as f64,
+                        mean_recomb: mean_recomb,
                     });
                 lowest_start = v.start;
                 highest_end = v.end;
+                total_recomb = 0.0;
             }
-            let interval = v.end - v.start;
-            total_recomb += v.recomb_rate * interval as f64;
             if v.start < lowest_start {
                 lowest_start = v.start;
             }
             if v.end > highest_end {
                 highest_end = v.end;
             }
+            chrom = key.to_string();
+            let interval = v.end - v.start;
+            let recomb_rate = v.recomb_rate * interval as f64;
+            total_recomb += recomb_rate;
             interval_window = highest_end - lowest_start;
         });
+
+        // Insert last remaining values for each chromosome
+        if total_recomb != 0.0 {
+            let mean_recomb = total_recomb / interval_window as f64;
+            average
+                .entry(chrom.clone())
+                .or_insert_with(Vec::new)
+                .push(AverageSlidingWindows {
+                    start: lowest_start,
+                    end: highest_end,
+                    mean_recomb: mean_recomb,
+                });
+        }
     });
 
     average
@@ -87,7 +105,7 @@ fn parse_file(path: &Path) -> BTreeMap<String, Vec<SlidingWindows>> {
     let mut data: BTreeMap<String, Vec<SlidingWindows>> = BTreeMap::new();
 
     buff.lines().map_while(Result::ok).skip(1).for_each(|line| {
-        let line: Vec<&str> = line.split('\t').collect();
+        let line: Vec<&str> = line.split_whitespace().collect();
 
         if line.len() != 5 {
             panic!("Invalid line: {}", line.len());
@@ -121,4 +139,35 @@ struct AverageSlidingWindows {
     start: usize,
     end: usize,
     mean_recomb: f64,
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_parse_file() {
+        let data = parse_file(Path::new("tests/test.txt"));
+        assert_eq!(data.len(), 2);
+        assert_eq!(data.get("chr1").unwrap().len(), 2);
+        assert_eq!(data.get("chr1").unwrap()[0].start, 0);
+        assert_eq!(data.get("chr1").unwrap()[0].end, 200);
+        assert_eq!(data.get("chr1").unwrap()[0].recomb_rate, 0.1);
+        assert_eq!(data.get("chr1").unwrap()[1].start, 200);
+        assert_eq!(data.get("chr1").unwrap()[1].end, 300);
+        assert_eq!(data.get("chr1").unwrap()[1].recomb_rate, 0.4);
+    }
+
+    #[test]
+    fn test_compute_average() {
+        let data = parse_file(Path::new("tests/test.txt"));
+        let average = compute_average(&data, 300);
+        average.iter().for_each(|(key, value)| {
+            println!("{}: {:?}", key, value);
+        });
+        assert_eq!(average.len(), 2);
+        assert_eq!(average.get("chr1").unwrap()[0].start, 0);
+        assert_eq!(average.get("chr1").unwrap()[0].end, 300);
+        assert_eq!(average.get("chr1").unwrap()[0].mean_recomb, 0.2);
+    }
 }
